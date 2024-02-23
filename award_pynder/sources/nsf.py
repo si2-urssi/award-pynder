@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 from __future__ import annotations
-from datetime import datetime
-
-from .base import DataSource, DatasetFields, ALL_DATASET_FIELDS
-
-import requests
-import pandas as pd
-from tqdm import tqdm
 
 import logging
+from datetime import datetime
+
+import pandas as pd
+import requests
+from tqdm import tqdm
+
+from .base import ALL_DATASET_FIELDS, DatasetFields, DataSource
 
 ###############################################################################
 
@@ -46,6 +46,7 @@ _NSF_API_URL_TEMPLATE = (
 ###############################################################################
 # LUTs
 
+
 class NSFPrograms:
     Biological_Sciences = "BIO"
     Computer_and_Information_Science_and_Engineering = "CISE"
@@ -57,6 +58,7 @@ class NSFPrograms:
     Mathematical_and_Physical_Sciences = "MPS"
     Social_Behavioral_and_Economic_Sciences = "SBE"
     Technology_Innovation_and_Partnerships = "TIP"
+
 
 CFDA_NUMBER_TO_NSF_PROGRAM_NAME_LUT = {
     "47.041": NSFPrograms.Engineering,
@@ -77,14 +79,15 @@ NSF_PROGRAM_TO_CFDA_NUMBER_LUT = {
 
 ###############################################################################
 
+
 class NSF(DataSource):
-    """Data source for the National Science Foundation."""    
+    """Data source for the National Science Foundation."""
 
     @staticmethod
     def _format_datetime(dt: str | datetime) -> str:
         """Parse datetime string or datetime and return NSF support datetime string."""
         return DataSource._parse_datetime(dt).strftime("%m/%d/%Y")
-    
+
     @staticmethod
     def _format_query(
         query: str | None,
@@ -118,7 +121,7 @@ class NSF(DataSource):
             api_str += f"&keyword={query}"
 
         return api_str
-    
+
     @staticmethod
     def _format_dataframe(
         data: pd.DataFrame,
@@ -161,7 +164,7 @@ class NSF(DataSource):
 
         # Create new dataframe with only the columns we want
         return data[ALL_DATASET_FIELDS]
-        
+
     @staticmethod
     def _get_chunk(
         query: str | None = None,
@@ -206,7 +209,7 @@ class NSF(DataSource):
                 f"Error while fetching NSF data: {e}; "
                 f"'raise_on_error' is False, ignoring..."
             )
-        
+
         # Default return but make this strict
         return None
 
@@ -215,11 +218,10 @@ class NSF(DataSource):
         query: str | None = None,
         from_datetime: str | datetime | None = None,
         to_datetime: str | datetime | None = None,
-        cfda_number: str | int | None = None,
+        cfda_number: str | None = None,
         project_outcomes_required: bool = False,
         raise_on_error: bool = True,
         tqdm_kwargs: dict | None = None,
-        **kwargs,
     ) -> pd.DataFrame:
         """Get data from the National Science Foundation."""
         # Continuously get chunks of data

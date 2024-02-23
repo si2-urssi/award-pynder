@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
+from award_pynder.sources.nsf import NSF, NSF_PROGRAM_TO_CFDA_NUMBER_LUT, NSFPrograms
+
 from ..utils import assert_dataset_basics
 
-from award_pynder.sources.nsf import NSF, NSFPrograms, NSF_PROGRAM_TO_CFDA_NUMBER_LUT
-
 ###############################################################################
+
 
 def test_nsf() -> None:
     # Get data

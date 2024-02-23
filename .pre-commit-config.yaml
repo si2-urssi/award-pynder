@@ -18,6 +18,7 @@ repos:
       - id: mypy
         additional_dependencies:
           - "types-requests"
+          - "types-python-dateutil"
 
   # Notebooks
   # - repo: https://github.com/nbQA-dev/nbQA

@@ -1,7 +1,6 @@
 """Data sources module for the award_pynder package."""
 
 from abc import ABC, abstractmethod
-from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
 from dateutil.parser import parse as dateutil_parse
@@ -13,9 +12,10 @@ if TYPE_CHECKING:
 
 ###############################################################################
 
+
 class DatasetFields:
     institution = "institution"
-    pi= "pi"
+    pi = "pi"
     year = "year"
     start = "start"
     end = "end"
@@ -27,12 +27,15 @@ class DatasetFields:
     query = "query"
     source = "source"
 
+
 ALL_DATASET_FIELDS = [
-    field_value for field_name, field_value in vars(DatasetFields).items()
+    field_value
+    for field_name, field_value in vars(DatasetFields).items()
     if not field_name.startswith("_")
 ]
 
 ###############################################################################
+
 
 class DataSource(ABC):
     """Abstract base class for data sources."""
@@ -43,7 +46,7 @@ class DataSource(ABC):
             return dateutil_parse(dt)
 
         return dt
-    
+
     @staticmethod
     def _format_date_for_pynder_standard(
         dt: str,
@@ -53,7 +56,7 @@ class DataSource(ABC):
             return str(dateutil_parse(dt).year)
 
         return dateutil_parse(dt).date().isoformat()
-    
+
     @staticmethod
     @abstractmethod
     def _format_dataframe(data: "pd.DataFrame") -> "pd.DataFrame":
