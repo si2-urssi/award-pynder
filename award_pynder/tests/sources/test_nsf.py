@@ -9,7 +9,7 @@ from ..utils import assert_dataset_basics
 
 def test_nsf() -> None:
     # Get data
-    data = NSF.get_data(
+    df = NSF.get_data(
         from_datetime="2014-01-01",
         to_datetime="2014-02-01",
         cfda_number=NSF_PROGRAM_TO_CFDA_NUMBER_LUT[NSFPrograms.Biological_Sciences],
@@ -17,4 +17,4 @@ def test_nsf() -> None:
     )
 
     # Run tests
-    assert_dataset_basics(data)
+    assert_dataset_basics(df)

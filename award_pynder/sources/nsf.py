@@ -124,33 +124,31 @@ class NSF(DataSource):
 
     @staticmethod
     def _format_dataframe(
-        data: pd.DataFrame,
+        df: pd.DataFrame,
         query: str | None = None,
     ) -> pd.DataFrame:
         # Create column of first and last name combined
-        data[DatasetFields.pi] = data["piFirstName"] + " " + data["piLastName"]
+        df[DatasetFields.pi] = df["piFirstName"] + " " + df["piLastName"]
 
         # Drop piFirstName and piLastName columns
-        data = data.drop(columns=["piFirstName", "piLastName"])
+        df = df.drop(columns=["piFirstName", "piLastName"])
 
         # Format all dates as date iso format
-        data["startDate"] = data["startDate"].apply(
+        df["startDate"] = df["startDate"].apply(
             DataSource._format_date_for_pynder_standard
         )
-        data["expDate"] = data["expDate"].apply(
-            DataSource._format_date_for_pynder_standard
-        )
-        data["date"] = data["date"].apply(
+        df["expDate"] = df["expDate"].apply(DataSource._format_date_for_pynder_standard)
+        df["date"] = df["date"].apply(
             DataSource._format_date_for_pynder_standard,
             fmt="year",
         )
 
         # Add columns for query and source
-        data[DatasetFields.query] = query
-        data[DatasetFields.source] = "NSF"
+        df[DatasetFields.query] = query
+        df[DatasetFields.source] = "NSF"
 
         # Rename columns to standard
-        data = data.rename(
+        df = df.rename(
             columns={
                 "awardeeName": DatasetFields.institution,
                 "date": DatasetFields.year,
@@ -163,7 +161,7 @@ class NSF(DataSource):
         )
 
         # Create new dataframe with only the columns we want
-        return data[ALL_DATASET_FIELDS]
+        return df[ALL_DATASET_FIELDS]
 
     @staticmethod
     def _get_chunk(

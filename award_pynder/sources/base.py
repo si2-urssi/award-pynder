@@ -1,14 +1,11 @@
 """Data sources module for the award_pynder package."""
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Literal
+from datetime import datetime
+from typing import Literal
 
+import pandas as pd
 from dateutil.parser import parse as dateutil_parse
-
-if TYPE_CHECKING:
-    from datetime import datetime
-
-    import pandas as pd
 
 ###############################################################################
 
@@ -59,12 +56,12 @@ class DataSource(ABC):
 
     @staticmethod
     @abstractmethod
-    def _format_dataframe(data: "pd.DataFrame") -> "pd.DataFrame":
+    def _format_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         """Format the data to standard across all funders."""
         raise NotImplementedError()
 
     @staticmethod
     @abstractmethod
-    def get_data() -> "pd.DataFrame":
+    def get_data() -> pd.DataFrame:
         """Get data from the source."""
         raise NotImplementedError()
