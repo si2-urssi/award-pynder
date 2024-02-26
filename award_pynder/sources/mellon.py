@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 from __future__ import annotations
-from copy import deepcopy
 
 import logging
+from copy import deepcopy
 from datetime import datetime
 
 import pandas as pd
@@ -52,7 +52,7 @@ fragment GrantSearchResults on GrantSearchResultWithTotal {
     totalCount
 }
 """.strip()  # noqa: E501
-_DEFAULT_BULK_PARAMS = {
+_DEFAULT_BULK_PARAMS: dict = {
     "operationName": "GrantFilterQuery",
     "variables": {
         "limit": _DEFAULT_CHUNK_SIZE,
@@ -82,7 +82,7 @@ query($grantId: String!) {
     }
 }
 """.strip()
-_DEFAULT_SINGLE_PARAMS = {
+_DEFAULT_SINGLE_PARAMS: dict = {
     "variables": {
         "grantId": "",
     },
@@ -119,7 +119,7 @@ class Mellon(DataSource):
                     to_datetime_parsed.year + 1,
                 )
             )
-        
+
         # Copy and update params
         params = deepcopy(_DEFAULT_BULK_PARAMS)
         params["variables"]["term"] = query or ""
@@ -129,10 +129,10 @@ class Mellon(DataSource):
 
         # Return the full API string
         return params
-    
+
     @staticmethod
     def _query_total_grants(
-        query: str| None = None,
+        query: str | None = None,
         from_datetime: str | datetime | None = None,
         to_datetime: str | datetime | None = None,
     ) -> int:
@@ -194,7 +194,7 @@ class Mellon(DataSource):
 
         # Create new dataframe with only the columns we want
         return df[ALL_DATASET_FIELDS]
-    
+
     @staticmethod
     def _get_funded_amount_for_grant(grant_id: str) -> float:
         # Copy and update params
@@ -214,7 +214,7 @@ class Mellon(DataSource):
 
             # Process results
             return data["data"]["grantDetails"]["grant"]["amount"]
-        
+
         except Exception as e:
             raise ValueError(f"Error while fetching grant amount: {e}") from e
 
@@ -247,9 +247,9 @@ class Mellon(DataSource):
             data = resp.json()
 
             # Process results
-            chunk = pd.DataFrame([
-                item["data"] for item in data["data"]["grantSearch"]["entities"]
-            ])
+            chunk = pd.DataFrame(
+                [item["data"] for item in data["data"]["grantSearch"]["entities"]]
+            )
 
             # Make API calls for amount funded
             chunk["amount"] = chunk["id"].apply(Mellon._get_funded_amount_for_grant)
@@ -316,5 +316,5 @@ class Mellon(DataSource):
         #         (all_results["dateAwarded"] >= from_datetime)
         #         & (all_results["dateAwarded"] <= to_datetime)
         #     ]
-        
+
         return all_results
