@@ -176,12 +176,12 @@ class NSF(DataSource):
         """Get a chunk of data from the National Science Foundation."""
         # Construct the query string
         api_str = NSF._format_query(
-            query,
-            from_datetime,
-            to_datetime,
-            cfda_number,
-            require_project_outcomes_reports,
-            offset,
+            query=query,
+            from_datetime=from_datetime,
+            to_datetime=to_datetime,
+            cfda_number=cfda_number,
+            require_project_outcomes_reports=require_project_outcomes_reports,
+            offset=offset,
         )
 
         try:
@@ -217,7 +217,7 @@ class NSF(DataSource):
         from_datetime: str | datetime | None = None,
         to_datetime: str | datetime | None = None,
         cfda_number: str | None = None,
-        project_outcomes_required: bool = False,
+        require_project_outcomes_reports: bool = False,
         raise_on_error: bool = True,
         tqdm_kwargs: dict | None = None,
     ) -> pd.DataFrame:
@@ -229,13 +229,13 @@ class NSF(DataSource):
             while True:
                 # Get the chunk
                 chunk = NSF._get_chunk(
-                    query,
-                    from_datetime,
-                    to_datetime,
-                    cfda_number,
-                    project_outcomes_required,
-                    offset,
-                    raise_on_error,
+                    query=query,
+                    from_datetime=from_datetime,
+                    to_datetime=to_datetime,
+                    cfda_number=cfda_number,
+                    require_project_outcomes_reports=require_project_outcomes_reports,
+                    offset=offset,
+                    raise_on_error=raise_on_error,
                 )
                 chunks.append(chunk)
 
