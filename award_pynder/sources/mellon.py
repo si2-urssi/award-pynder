@@ -226,7 +226,7 @@ class Mellon(DataSource):
         offset: int = 0,
         raise_on_error: bool = True,
     ) -> pd.DataFrame | None:
-        """Get a chunk of data from the National Science Foundation."""
+        """Get a chunk of data from the Mellon Foundation."""
         # Construct the query string
         query_params = Mellon._format_query_params(
             query=query,
@@ -277,7 +277,29 @@ class Mellon(DataSource):
         raise_on_error: bool = True,
         tqdm_kwargs: dict | None = None,
     ) -> pd.DataFrame:
-        """Get data from the National Science Foundation."""
+        """
+        Get data from the Mellon Foundation.
+
+        Parameters
+        ----------
+        query : str, optional
+            The query to search for, by default None
+        from_datetime : str | datetime, optional
+            The start date to search from, by default None
+        to_datetime : str | datetime, optional
+            The end date to search to, by default None
+        raise_on_error : bool, optional
+            Whether to raise on error or ignore, by default True
+        tqdm_kwargs : dict, optional
+            Additional keyword arguments to pass to tqdm, by
+            default None
+
+        Returns
+        -------
+        pd.DataFrame
+            All grants from the Mellon Foundation for the specified time period and
+            query, formatted into award_pynder standard format.
+        """
         # First check for the total number of grants
         total_grants = Mellon._query_total_grants(
             query=query,
@@ -309,12 +331,5 @@ class Mellon(DataSource):
 
         # Concatenate all results
         all_results = pd.concat(results, ignore_index=True)
-
-        # Filter out any results that are not within the date range
-        # if from_datetime is not None and to_datetime is not None:
-        #     all_results = all_results[
-        #         (all_results["dateAwarded"] >= from_datetime)
-        #         & (all_results["dateAwarded"] <= to_datetime)
-        #     ]
 
         return all_results

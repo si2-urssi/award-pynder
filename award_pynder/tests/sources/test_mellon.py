@@ -7,7 +7,7 @@ from ..utils import assert_dataset_basics
 ###############################################################################
 
 
-def test_nsf() -> None:
+def test_mellon() -> None:
     # Get data
     df = Mellon.get_data(
         query="software",

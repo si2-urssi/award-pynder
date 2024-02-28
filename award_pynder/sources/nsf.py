@@ -221,7 +221,32 @@ class NSF(DataSource):
         raise_on_error: bool = True,
         tqdm_kwargs: dict | None = None,
     ) -> pd.DataFrame:
-        """Get data from the National Science Foundation."""
+        """
+        Get data from the National Science Foundation.
+
+        Parameters
+        ----------
+        query : str, optional
+            The query string to search for.
+        from_datetime : str or datetime, optional
+            The start date for the search.
+        to_datetime : str or datetime, optional
+            The end date for the search.
+        cfda_number : str, optional
+            The CFDA number to search for (e.g., "47.041").
+        require_project_outcomes_reports : bool, optional
+            Whether to require project outcomes reports (usually "completed" grants).
+        raise_on_error : bool, optional
+            Whether to raise an error if the request fails.
+        tqdm_kwargs : dict, optional
+            Keyword arguments to pass to tqdm.
+
+        Returns
+        -------
+        pd.DataFrame
+            All grants from the National Science Foundation for the specified time
+            period and query, formatted into award_pynder standard format.
+        """
         # Continuously get chunks of data
         offset = 0
         chunks: list[pd.DataFrame] = []
