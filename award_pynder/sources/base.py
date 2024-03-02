@@ -46,13 +46,18 @@ class DataSource(ABC):
 
     @staticmethod
     def _format_date_for_pynder_standard(
-        dt: str,
+        dt: str | datetime,
         fmt: Literal["year", "date"] = "date",
-    ) -> str:
-        if fmt == "year":
-            return str(dateutil_parse(dt).year)
+    ) -> str | int | None:
+        if dt is None:
+            return None
+        if isinstance(dt, str):
+            dt = dateutil_parse(dt)
 
-        return dateutil_parse(dt).date().isoformat()
+        if fmt == "year":
+            return dt.year
+
+        return dt.date().isoformat()
 
     @staticmethod
     @abstractmethod

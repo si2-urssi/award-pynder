@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from copy import deepcopy
 from datetime import datetime
 
@@ -18,7 +19,7 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
-_DEFAULT_CHUNK_SIZE = 50
+_DEFAULT_CHUNK_SIZE = 100
 
 # Mellon uses GraphQL for their API
 # To try and debug / for documentation, use: https://graphdoc.io/
@@ -212,6 +213,9 @@ class Mellon(DataSource):
             resp.raise_for_status()
             data = resp.json()
 
+            # Sleep for a second
+            time.sleep(2)
+
             # Process results
             return data["data"]["grantDetails"]["grant"]["amount"]
 
@@ -251,10 +255,13 @@ class Mellon(DataSource):
                 [item["data"] for item in data["data"]["grantSearch"]["entities"]]
             )
 
+            # Sleep for a second
+            time.sleep(2)
+
             # Make API calls for amount funded
             chunk["amount"] = chunk["id"].apply(Mellon._get_funded_amount_for_grant)
 
-            return Mellon._format_dataframe(chunk)
+            return Mellon._format_dataframe(chunk, query=query)
 
         except Exception as e:
             # Handle raise on error or ignore
@@ -262,7 +269,7 @@ class Mellon(DataSource):
                 raise e
 
             log.error(
-                f"Error while fetching NSF data: {e}; "
+                f"Error while fetching Mellon data: {e}; "
                 f"'raise_on_error' is False, ignoring..."
             )
 
