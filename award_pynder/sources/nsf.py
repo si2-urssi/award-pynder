@@ -252,7 +252,7 @@ class NSF(DataSource):
             period and query, formatted into award_pynder standard format.
         """
         # Continuously get chunks of data
-        offset = 0
+        offset = 1
         chunks: list[pd.DataFrame] = []
         with tqdm(desc="Fetching NSF data", **(tqdm_kwargs or {})) as pbar:
             while True:
