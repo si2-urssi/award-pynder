@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import logging
+import time
 from datetime import datetime
 
 import pandas as pd
 import requests
 from tqdm import tqdm
-import time
 
 from .base import ALL_DATASET_FIELDS, DatasetFields, DataSource
 
@@ -196,7 +196,7 @@ class NSF(DataSource):
             else:
                 # If no data, return empty dataframe
                 return_data = pd.DataFrame(columns=_DEFAULT_METADATA_SET)
-            
+
             # Sleep for a second
             time.sleep(2)
 

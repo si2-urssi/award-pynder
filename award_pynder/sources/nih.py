@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from copy import deepcopy
 import logging
-from datetime import datetime
 import time
+from copy import deepcopy
+from datetime import datetime
 
 import pandas as pd
 import requests
@@ -38,7 +38,7 @@ _DEFAULT_CHUNK_SIZE = 500
 _DEFAULT_PARAMS: dict = {
     "criteria": {
         "award": {
-            "award_notice_date":{
+            "award_notice_date": {
                 "from_date": None,
                 "to_date": None,
             }
@@ -48,7 +48,7 @@ _DEFAULT_PARAMS: dict = {
             "search_text": None,
             "operator": "advanced",
             "search_field": "abstracttext",
-        }
+        },
     },
     "include_fields": _DEFAULT_METADATA_SET,
     "limit": _DEFAULT_CHUNK_SIZE,
@@ -125,10 +125,10 @@ class NIH(DataSource):
 
         # Create new dataframe with only the columns we want
         return df[ALL_DATASET_FIELDS]
-    
+
     @staticmethod
     def _query_total_grants(
-        query: str,
+        query: str | None,
         from_datetime: str | datetime | None,
         to_datetime: str | datetime | None,
     ) -> int:
@@ -150,7 +150,7 @@ class NIH(DataSource):
             data = resp.json()
 
             return data["meta"]["total"]
-        
+
         except Exception as e:
             raise ValueError(f"Error while fetching total grants: {e}") from e
 
@@ -217,7 +217,7 @@ class NIH(DataSource):
         tqdm_kwargs: dict | None = None,
     ) -> pd.DataFrame:
         """
-        Get data from the National Science Foundation.
+        Get data from the National Institute of Health.
 
         Parameters
         ----------
@@ -235,7 +235,7 @@ class NIH(DataSource):
         Returns
         -------
         pd.DataFrame
-            All grants from the National Science Foundation for the specified time
+            All grants from the National Institute of Health for the specified time
             period and query, formatted into award_pynder standard format.
         """
         # Continuously get chunks of data

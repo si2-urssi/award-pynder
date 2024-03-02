@@ -19,6 +19,7 @@ def test_nih_basics() -> None:
     # Run tests
     assert_dataset_basics(df)
 
+
 def test_nih_too_many_grants() -> None:
     # Get data
     try:
