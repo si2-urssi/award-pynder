@@ -5,12 +5,11 @@ from __future__ import annotations
 import logging
 import time
 from datetime import datetime
-import requests
 
 import pandas as pd
 import requests
-from tqdm import tqdm
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 from .base import ALL_DATASET_FIELDS, DatasetFields, DataSource
 
@@ -89,7 +88,10 @@ class Sloan(DataSource):
                 soup.find(
                     "td",
                     class_="results-count",
-                ).text.replace(",", "").replace("Grants", "").strip()
+                )
+                .text.replace(",", "")
+                .replace("Grants", "")
+                .strip()
             )
 
         except Exception as e:
@@ -132,7 +134,8 @@ class Sloan(DataSource):
                 amount = header.find("div", class_="amount").text
                 amount = float(
                     amount.replace("amount: ", "")
-                    .replace("$", "").replace(",", "")
+                    .replace("$", "")
+                    .replace(",", "")
                     .strip()
                 )
 
@@ -144,7 +147,9 @@ class Sloan(DataSource):
                 details = li.find("div", class_="details")
 
                 # Collect the description (stored in the div "brief-description")
-                description = details.find("div", class_="brief-description").text.strip()
+                description = details.find(
+                    "div", class_="brief-description"
+                ).text.strip()
 
                 # Collect the id (stored in the div attribute
                 # "data-accordian-group" for div with class "details")
@@ -159,12 +164,12 @@ class Sloan(DataSource):
 
                 # Take all of the text from the second ul
                 sub_program_and_pi = grid.find_all("ul")[1].text.strip()
-                
+
                 # Find the index of the word "Investigator"
                 pi_index = sub_program_and_pi.find("Investigator")
 
                 # Only keep text after the word "Investigator"
-                pi = sub_program_and_pi[pi_index + len("Investigator"):].strip()
+                pi = sub_program_and_pi[pi_index + len("Investigator") :].strip()
 
                 # Add row
                 rows.append(
@@ -260,7 +265,7 @@ class Sloan(DataSource):
         # Concatenate the chunks
         if len(chunks) == 0:
             return pd.DataFrame(columns=ALL_DATASET_FIELDS)
-        
+
         # Concat and filter out years not in range
         df = pd.concat(chunks, ignore_index=True).reset_index(drop=True)
         if from_datetime:
