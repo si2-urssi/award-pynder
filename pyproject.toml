@@ -29,6 +29,7 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
   "beautifulsoup4>=2,<3",
+  "lxml>=5,<6",
   "pandas>=1",
   "python-dateutil>=2,<3",
   "requests>=2,<3",
