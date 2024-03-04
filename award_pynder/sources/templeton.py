@@ -4,12 +4,11 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
+from io import StringIO
 
 import pandas as pd
 import requests
-from io import StringIO
 from bs4 import BeautifulSoup
-from tqdm import tqdm
 
 from .base import ALL_DATASET_FIELDS, DatasetFields, DataSource
 
@@ -20,10 +19,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-_TEMPLETON_QUERY_API_URL = (
-    "https://www.templeton.org/?"
-    "limit={limit}"
-)
+_TEMPLETON_QUERY_API_URL = "https://www.templeton.org/?" "limit={limit}"
 _DEFAULT_CHUNK_SIZE = 500
 
 _TEMPLETON_BULK_API_URL = "https://www.templeton.org/grants/grant-database"
