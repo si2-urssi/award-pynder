@@ -279,7 +279,7 @@ class NSF(DataSource):
         # Concatenate the chunks
         if len(chunks) == 0:
             return pd.DataFrame(columns=ALL_DATASET_FIELDS)
-        
+
         return (
             pd.concat(chunks, ignore_index=True)
             .drop_duplicates(subset="id")
