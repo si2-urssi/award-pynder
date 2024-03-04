@@ -86,7 +86,6 @@ class NSF(DataSource):
 
     @staticmethod
     def _format_datetime(dt: str | datetime) -> str:
-        """Parse datetime string or datetime and return NSF support datetime string."""
         return DataSource._parse_datetime(dt).strftime("%m/%d/%Y")
 
     @staticmethod
@@ -98,7 +97,6 @@ class NSF(DataSource):
         require_project_outcomes_reports: bool,
         offset: int,
     ) -> str:
-        """Format the full API string with query parameters."""
         # Fill info with always known values
         metadata_fields = ",".join(_DEFAULT_METADATA_SET)
         api_str = _NSF_API_URL_TEMPLATE.format(
@@ -174,7 +172,6 @@ class NSF(DataSource):
         offset: int = 0,
         raise_on_error: bool = True,
     ) -> pd.DataFrame | None:
-        """Get a chunk of data from the National Science Foundation."""
         # Construct the query string
         api_str = NSF._format_query(
             query=query,

@@ -61,7 +61,6 @@ class NIH(DataSource):
 
     @staticmethod
     def _format_datetime(dt: str | datetime) -> str:
-        """Parse datetime string or datetime and return NIH support datetime string."""
         return DataSource._parse_datetime(dt).date().isoformat()
 
     @staticmethod
@@ -130,7 +129,6 @@ class NIH(DataSource):
         from_datetime: str | datetime | None,
         to_datetime: str | datetime | None,
     ) -> int:
-        """Query the total number of grants from the National Science Foundation."""
         try:
             # Construct params for a single query
             params = NIH._format_query(
@@ -160,7 +158,6 @@ class NIH(DataSource):
         offset: int = 0,
         raise_on_error: bool = True,
     ) -> pd.DataFrame | None:
-        """Get a chunk of data from the National Science Foundation."""
         # Construct the query string
         params = NIH._format_query(
             query=query,

@@ -104,7 +104,6 @@ class Mellon(DataSource):
         offset: int,
         limit: int = _DEFAULT_CHUNK_SIZE,
     ) -> dict:
-        """Format the full API string with query parameters."""
         # Get years
         years = []
         if from_datetime is not None and to_datetime is None:
@@ -230,7 +229,6 @@ class Mellon(DataSource):
         offset: int = 0,
         raise_on_error: bool = True,
     ) -> pd.DataFrame | None:
-        """Get a chunk of data from the Mellon Foundation."""
         # Construct the query string
         query_params = Mellon._format_query_params(
             query=query,
