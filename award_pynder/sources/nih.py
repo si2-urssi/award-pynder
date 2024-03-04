@@ -37,11 +37,9 @@ _DEFAULT_METADATA_SET = [
 _DEFAULT_CHUNK_SIZE = 500
 _DEFAULT_PARAMS: dict = {
     "criteria": {
-        "award": {
-            "award_notice_date": {
-                "from_date": None,
-                "to_date": None,
-            }
+        "award_notice_date": {
+            "from_date": None,
+            "to_date": None,
         },
         "exclude_subprojects": True,
         "advanced_text_search": {
@@ -77,10 +75,10 @@ class NIH(DataSource):
         """Format the full API string with query parameters."""
         # Fill info with always known values
         params = deepcopy(_DEFAULT_PARAMS)
-        params["criteria"]["award"]["award_notice_date"]["from_date"] = (
+        params["criteria"]["award_notice_date"]["from_date"] = (
             NIH._format_datetime(from_datetime) if from_datetime else None
         )
-        params["criteria"]["award"]["award_notice_date"]["to_date"] = (
+        params["criteria"]["award_notice_date"]["to_date"] = (
             NIH._format_datetime(to_datetime) if to_datetime else None
         )
         params["criteria"]["advanced_text_search"]["search_text"] = query or ""
@@ -277,4 +275,7 @@ class NIH(DataSource):
             chunks.append(chunk)
 
         # Concatenate the chunks
+        if len(chunks) == 0:
+            return pd.DataFrame(columns=ALL_DATASET_FIELDS)
+        
         return pd.concat(chunks, ignore_index=True).reset_index(drop=True)

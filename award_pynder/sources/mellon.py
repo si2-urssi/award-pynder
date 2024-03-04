@@ -337,6 +337,7 @@ class Mellon(DataSource):
             results.append(chunk)
 
         # Concatenate all results
-        all_results = pd.concat(results, ignore_index=True)
+        if len(results) == 0:
+            return pd.DataFrame(columns=ALL_DATASET_FIELDS)
 
-        return all_results
+        return pd.concat(results, ignore_index=True)

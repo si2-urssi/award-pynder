@@ -12,7 +12,7 @@ def test_nih_basics() -> None:
     df = NIH.get_data(
         query="ethnography",
         from_datetime="2023-01-01",
-        to_datetime="2023-02-01",
+        to_datetime="2023-06-01",
         tqdm_kwargs={"leave": False},
     )
 
